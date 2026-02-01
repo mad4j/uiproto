@@ -9,6 +9,9 @@
 __pycache__/
 *.pyc
 
+# Generated code directory
+generated/
+
 # Build artifacts
 build/
 dist/
