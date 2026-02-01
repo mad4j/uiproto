@@ -1,0 +1,43 @@
+# Generated Protocol Buffer files
+*.pb.go
+*.pb.cc
+*.pb.h
+*_pb2.py
+*_pb2_grpc.py
+*_pb.js
+*.pb.java
+__pycache__/
+*.pyc
+
+# Build artifacts
+build/
+dist/
+out/
+target/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Package manager
+node_modules/
+vendor/
+go.sum
+package-lock.json
+yarn.lock
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.log
