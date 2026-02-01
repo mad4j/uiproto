@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package uiproto;
+
+// Communication protocol between embedded device and JavaScript HMI application
+// Supports three communication scenarios:
+// 1. Request-Reply: Standard request-response pattern
+// 2. Notification: One-way message (no response expected)
+// 3. Request-Reply with continuation: Immediate reply with continuation flag,
+//    followed by a Notification when work is complete
+
+// Message types enumeration
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  REQUEST = 1;
+  REPLY = 2;
+  NOTIFICATION = 3;
+}
+
+// Parameter value supporting different data types
+message ParameterValue {
+  oneof value {
+    int32 int_value = 1;
+    uint32 uint_value = 2;
+    float float_value = 3;
+    double double_value = 4;
+    bool bool_value = 5;
+    string string_value = 6;
+    bytes bytes_value = 7;
+  }
+}
+
+// Parameter with name and value
+message Parameter {
+  string name = 1;
+  ParameterValue value = 2;
+}
+
+// Request message - sent from JavaScript HMI to embedded device
+message Request {
+  uint32 request_id = 1;           // Unique identifier for this request
+  string command = 2;               // Command to execute (e.g., "set_parameter", "get_parameter")
+  repeated Parameter parameters = 3; // Parameters for the command
+  int64 timestamp = 4;              // Timestamp when request was created
+}
+
+// Reply message - response from embedded device to JavaScript HMI
+message Reply {
+  uint32 request_id = 1;            // References the original request_id
+  bool success = 2;                 // Indicates if the request was successful
+  string message = 3;               // Optional status or error message
+  repeated Parameter parameters = 4; // Response parameters
+  bool continuation = 5;            // If true, a Notification will follow when work is complete
+  int64 timestamp = 6;              // Timestamp when reply was created
+}
+
+// Notification message - asynchronous message from embedded device to JavaScript HMI
+message Notification {
+  string event_type = 1;            // Type of notification (e.g., "work_completed", "parameter_changed", "error")
+  uint32 request_id = 2;            // Optional: references a request_id if related to a previous request
+  repeated Parameter parameters = 3; // Notification parameters
+  int64 timestamp = 4;              // Timestamp when notification was created
+}
+
+// Message envelope - wraps all message types
+message Message {
+  MessageType type = 1;             // Type of the message
+  oneof payload {
+    Request request = 2;
+    Reply reply = 3;
+    Notification notification = 4;
+  }
+}
