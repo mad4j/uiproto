@@ -56,8 +56,8 @@ message Reply {
 
 // Notification message - asynchronous message from embedded device to JavaScript HMI
 message Notification {
-  uint32 request_id = 2;            // Optional: references a request_id if related to a previous request
   string event_type = 1;            // Type of notification (e.g., "work_completed", "parameter_changed", "error")
+  uint32 request_id = 2;            // Optional: references a request_id if related to a previous request
   repeated Parameter parameters = 3; // Notification parameters
   int64 timestamp = 4;              // Timestamp when notification was created
 }

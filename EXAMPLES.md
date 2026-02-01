@@ -421,6 +421,7 @@ ws.on('message', (data) => {
 
 ```python
 import serial
+import time
 import protocol_pb2
 
 # Open serial port
